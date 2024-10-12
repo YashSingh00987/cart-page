@@ -47,6 +47,18 @@
       "images": "./hoodie.png",
       "color": "silver",
       "size":"M"
+    },
+    {
+      "id": 5,
+      "title": "Product 5",
+      "description": "This is the description for Product 5.",
+      "category": "Watch",
+      "price": 70,
+      "stock": 0,
+      "brand": "Boat",
+      "images": "./hoodie.png",
+      "color": "silver",
+      "size":"M"
     }
   ],
   "categories": [

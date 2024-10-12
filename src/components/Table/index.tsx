@@ -98,6 +98,7 @@ const matchesSize =  product.size.toLocaleLowerCase().includes(selectedSize.toLo
                     <Input
                       type="number"
                       // value={quantities[product.id] || 0}
+                      isDisabled={product.stock === 0}
                       onChange={(e) =>{ if (parseInt(e.target.value) > product.stock) {
                         alert(`Maximum stock for this product:${product.stock}`)
                         e.target.value = ""
@@ -120,6 +121,7 @@ const matchesSize =  product.size.toLocaleLowerCase().includes(selectedSize.toLo
                     <Checkbox
                     isChecked={selectedProducts.includes(product.id)}
                      onChange={() => handleCheckboxChange(product.id)}
+                     isDisabled={product.stock === 0}
                     />
                   </HStack>
                 </Td>
