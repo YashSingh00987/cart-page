@@ -1,0 +1,70 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "title": "Product 1",
+      "description": "This is the description for Product 1.",
+      "category": "Hoodies",
+      "price": 10,
+      "stock": 5,
+      "brand": "Reebok",
+      "images": "./hoodie.png",
+      "color": "black",
+      "size":"L"
+    },
+    {
+      "id": 2,
+      "title": "Product 2",
+      "description": "This is the description for Product 2.",
+      "category": "Hoodies",
+      "price": 20,
+      "stock": 10,
+      "brand": "Nike",
+      "images": "./hoodie.png",
+      "color": "white",
+      "size":"M"
+    },
+    {
+      "id": 3,
+      "title": "Product 3",
+      "description": "This is the description for Product 3.",
+      "category": "Shoes",
+      "price": 100,
+      "stock": 30,
+      "brand": "Reebok",
+      "images": "./hoodie.png",
+      "color": "red",
+      "size":"S"
+    },
+    {
+      "id": 4,
+      "title": "Product 4",
+      "description": "This is the description for Product 4.",
+      "category": "Watch",
+      "price": 70,
+      "stock": 22,
+      "brand": "Noise",
+      "images": "./hoodie.png",
+      "color": "silver",
+      "size":"M"
+    }
+  ],
+  "categories": [
+    {
+      "name": "Hoodies"
+    },
+    {
+      "name": "Shoes"
+    },
+    {
+      "name": "Watch"
+    }
+  ],
+  "sizes": [
+    {"size": "S"},
+    {"size": "M"},
+    {"size": "L"},
+    {"size": "XL"},
+    {"size": "XXL"}
+  ]
+}
