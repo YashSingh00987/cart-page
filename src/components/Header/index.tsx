@@ -14,7 +14,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addSearchText, addSelectedCategory, addSelectedSize } from "../../utils/searchSlice";
 import { RootState } from "../../utils/appStore";
 import { addToCart } from "../../utils/cartSlice";
-import { Link, useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 
 const Header = () => {
   const dispatch = useDispatch()
