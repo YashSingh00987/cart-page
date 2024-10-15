@@ -14,20 +14,27 @@ import { useDispatch, useSelector } from "react-redux";
 import { addSearchText, addSelectedCategory, addSelectedSize } from "../../utils/searchSlice";
 import { RootState } from "../../utils/appStore";
 import { addToCart } from "../../utils/cartSlice";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Header = () => {
   const dispatch = useDispatch()
+  const navigate = useNavigate();
   
-  const [selectedCategory, setSelectedCategory] = useState<string>("");
-  const [selectedSize, setSelectedSize] = useState<string>("");
+
+  const getSelectedCategory = useSelector((store: RootState) => store.search.selectedCategory);
+  const getSelectedSizes = useSelector((store: RootState) => store.search.selectedSize);  
+  const getSearchText = useSelector((store: RootState) => store.search.searchText);
+  
+  const [selectedCategory, setSelectedCategory] = useState<string>(getSelectedCategory);
+  const [selectedSize, setSelectedSize] = useState<string>(getSelectedSizes);
   const selectedProducts = useSelector((store:RootState) => store.table?.selectedProducts)
   const quantities = useSelector((store:RootState) => store.table.quantities)
+  const[searchItem, setSearchItem] = useState(getSearchText);
   const categories = products.categories.map((category) => {
     return { label: category.name, value: category.name };
   });
   
-
+  
 
   const sizes = products.sizes.map((size) => {
     return { label: size.size, value: size.size };
@@ -36,36 +43,46 @@ const Header = () => {
 
 
  
-  const[searchItem, setSearchItem] = useState("");
-  const handleSearch = () => {
-    dispatch(addSearchText(searchItem));
+  
+  const handleSearch = (t: string) => {
+    dispatch(addSearchText(t));
   };
 
   const reset = () => {
     setSelectedCategory("") 
     setSelectedSize(""); 
+    setSearchItem("");
     dispatch(addSelectedSize(""));
     dispatch(addSelectedCategory(""));
+    dispatch(addSearchText(""));
 
   }
 
   const handleAddToCart = () => {
-    selectedProducts.forEach((productId) => {
-      const product = products.products.find((p) => p.id === productId);
-      if (product) {
-        const quantity = quantities[productId] || 1;
+    let allQuantitiesAvailable = true;
+  selectedProducts.forEach((productId) => {
+    const product = products.products.find((p) => p.id === productId);
+    if (product) {
+      const quantity = quantities[productId];
+      if (quantity) {
         dispatch(addToCart({
           id: product.id,
           title: product.title,
           price: product.price,
           quantity: quantity,
         }));
+      } else {
+        allQuantitiesAvailable = false;
+        alert("Please select quantity for all selected products");
       }
-    });
-    
+    }
+  });
+  
+  if (allQuantitiesAvailable) {
+    navigate("/cart");
+  }
   };
 
- 
   return (
     <Flex justifyContent={"space-between"} padding={"16px"}>
       <Flex gap={"10px"} alignItems={"center"}>
@@ -117,21 +134,19 @@ const Header = () => {
       </Flex>
       <Flex gap={"10px"} alignItems={"center"}>
         <Text>Search:</Text>
-        <Input defaultValue={searchItem} placeholder="Search Product" 
+        <Input value={searchItem} placeholder="Search Product" 
         onChange={(e) => {
           if(e.target.value === ""){
             dispatch(addSearchText(""));
           }
           else {
           setSearchItem(e.target.value);
+          handleSearch(e.target.value);
           }}}
-        onKeyDown={(e) => {
-          if(e.key === "Enter"){
-            handleSearch();
-          }
-        }}
+        
         />
-        <Link to="/cart">
+        
+        {/* <Link to="/cart"> */}
         <Button
           variant={"outline"}
           padding={"12px"}
@@ -141,7 +156,7 @@ const Header = () => {
         >
           Add to Cart
         </Button>
-        </Link>
+        {/* </Link> */}
       </Flex>
     </Flex>
   );
