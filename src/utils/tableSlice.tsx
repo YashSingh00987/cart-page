@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface TableState {
   selectedProducts: number[];
@@ -6,27 +6,35 @@ interface TableState {
 }
 const initialState: TableState = {
   selectedProducts: [],
-    quantities: {},
-}
+  quantities: {},
+};
 const tableSlice = createSlice({
-  name: 'table',
+  name: "table",
   initialState,
   reducers: {
     toggleSelectedProduct: (state, action: PayloadAction<number>) => {
       const productId = action.payload;
       if (state.selectedProducts.includes(productId)) {
-        state.selectedProducts = state.selectedProducts.filter(id => id !== productId);
+        state.selectedProducts = state.selectedProducts.filter(
+          (id) => id !== productId
+        );
       } else {
         state.selectedProducts.push(productId);
       }
     },
-    updateQuantity: (state, action: PayloadAction<{ id: number; quantity: number }>) => {
+    updateQuantity: (
+      state,
+      action: PayloadAction<{ id: number; quantity: number }>
+    ) => {
       const { id, quantity } = action.payload;
       state.quantities[id] = quantity;
+    },
+    resetQuantities: (state) => {
+      state.quantities = {};
     },
   },
 });
 
-export const { toggleSelectedProduct,
-  updateQuantity, } = tableSlice.actions;
+export const { toggleSelectedProduct, updateQuantity, resetQuantities } =
+  tableSlice.actions;
 export default tableSlice.reducer;
