@@ -20,10 +20,13 @@ import { RootState } from "../../utils/appStore";
 import { addToCart } from "../../utils/cartSlice";
 import { useNavigate } from "react-router-dom";
 import { resetQuantities } from "../../utils/tableSlice";
+import { useIsMobile } from "../../utils/useIsMobileHook";
 
 const Header = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const { isMobile } = useIsMobile();
 
   const getSelectedCategory = useSelector(
     (store: RootState) => store.search.selectedCategory
@@ -107,8 +110,56 @@ const Header = () => {
   };
 
   return (
-    <Flex justifyContent={"space-between"} padding={"16px"}>
-      <Flex gap={"10px"} alignItems={"center"}>
+    <Flex
+      justifyContent={"space-between"}
+      direction={["column", "column", "row"]}
+      padding={["8px", "10px", "12px"]}
+      gap={["10px", "12px", "16px"]}
+    >
+      <Flex
+        gap={"10px"}
+        alignItems={"center"}
+        direction={["row", "row", "row"]}
+        width={["100%", "100%", "auto"]}
+        order={[1, 1, 2]}
+      >
+        <Flex alignItems="center" width={"100%"} gap={"10px"}>
+          {!isMobile ? <Text>Search:</Text> : null}
+          <Input
+            width={"100%"}
+            value={searchItem}
+            placeholder="Search Product"
+            onChange={(e) => {
+              if (e.target.value === "") {
+                setSearchItem(e.target.value);
+                dispatch(addSearchText(""));
+              } else {
+                setSearchItem(e.target.value);
+                handleSearch(e.target.value);
+              }
+            }}
+          />
+        </Flex>
+        {/* <Link to="/cart"> */}
+        <Button
+          variant={"outline"}
+          padding={"12px"}
+          width={["40%", "40%", "70%"]}
+          // marginLeft={["0px", "24px", "0px"]}
+          colorScheme="blue"
+          onClick={handleAddToCart}
+        >
+          Add to Cart
+        </Button>
+        {/* </Link> */}
+      </Flex>
+      <Flex
+        gap={"10px"}
+        alignItems={"center"}
+        direction={["row", "row", "row"]}
+        width={["100%", "100%", "auto"]}
+        order={[2, 2, 1]}
+      >
         <Select
           placeholder="All Category"
           value={selectedCategory}
@@ -117,6 +168,7 @@ const Header = () => {
             setSelectedCategory(ctg);
             dispatch(addSelectedCategory(ctg));
           }}
+          width={["100%", "100%", "auto"]}
         >
           {categories.map((category) => {
             return (
@@ -134,6 +186,7 @@ const Header = () => {
             setSelectedSize(sz);
             dispatch(addSelectedSize(sz));
           }}
+          width={["100%", "100%", "auto"]}
         >
           {sizes.map((size) => {
             return (
@@ -150,34 +203,6 @@ const Header = () => {
           onClick={reset}
           icon={<Icon as={BiReset} color={"black"} size={"md"} />}
         />
-      </Flex>
-      <Flex gap={"10px"} alignItems={"center"}>
-        <Text>Search:</Text>
-        <Input
-          value={searchItem}
-          placeholder="Search Product"
-          onChange={(e) => {
-            if (e.target.value === "") {
-              setSearchItem(e.target.value);
-              dispatch(addSearchText(""));
-            } else {
-              setSearchItem(e.target.value);
-              handleSearch(e.target.value);
-            }
-          }}
-        />
-
-        {/* <Link to="/cart"> */}
-        <Button
-          variant={"outline"}
-          padding={"12px"}
-          width={"100%"}
-          colorScheme="blue"
-          onClick={handleAddToCart}
-        >
-          Add to Cart
-        </Button>
-        {/* </Link> */}
       </Flex>
     </Flex>
   );
